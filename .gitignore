@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Secrets - never commit real credentials
+.env
+.env.local
+.env.*.local
+
+# The audit ledger is runtime state, not source. Each clone starts a fresh chain.
+# Note: `data/*` rather than `data/`, because git cannot re-include a file
+# inside a directory that is itself excluded.
+data/*
+!data/.gitkeep
+
+# Build output
+web/dist/
+*.tsbuildinfo
+
+# Logs and editor noise
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

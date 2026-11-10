@@ -1,0 +1,115 @@
+@import 'tailwindcss';
+
+/*
+ * Control-plane visual language: dark, dense, instrument-panel. The palette is
+ * deliberately narrow so that colour always means something -- green is money
+ * that moved, amber is waiting on a human, red is refused. Nothing decorative
+ * uses those three hues.
+ */
+@theme {
+  --color-ink-950: #070b12;
+  --color-ink-900: #0b111c;
+  --color-ink-850: #0f1724;
+  --color-ink-800: #141d2d;
+  --color-ink-700: #1d2940;
+  --color-ink-600: #2a3a57;
+  --color-ink-400: #64789c;
+  --color-ink-300: #8fa2c2;
+  --color-ink-200: #c3d0e4;
+
+  --color-accent-500: #3b82f6;
+  --color-accent-400: #60a5fa;
+  --color-accent-300: #93c5fd;
+
+  --color-approve-500: #10b981;
+  --color-approve-400: #34d399;
+  --color-escalate-500: #f59e0b;
+  --color-escalate-400: #fbbf24;
+  --color-deny-500: #ef4444;
+  --color-deny-400: #f87171;
+
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink-950);
+  color: var(--color-ink-200);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A faint grid, so the surface reads as an instrument panel rather than a page. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 120% 80% at 50% 0%, black 20%, transparent 75%);
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbars that belong to the panel rather than the OS. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-600) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-ink-600);
+  border-radius: 5px;
+  border: 2px solid var(--color-ink-950);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-400);
+}
+
+@keyframes flash-in {
+  from {
+    background-color: rgba(59, 130, 246, 0.16);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+.flash-in {
+  animation: flash-in 1.1s ease-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash-in, .pulse-dot {
+    animation: none;
+  }
+}

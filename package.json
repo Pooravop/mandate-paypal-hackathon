@@ -1,0 +1,28 @@
+{
+  "name": "mandate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mandate - a payment control plane that lets AI agents spend real money safely, built on the PayPal REST API.",
+  "license": "MIT",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm --workspace @mandate/server run dev",
+    "dev:web": "npm --workspace @mandate/web run dev",
+    "build": "npm --workspace @mandate/web run build",
+    "start": "npm --workspace @mandate/server run start",
+    "test": "npm --workspace @mandate/server run test --",
+    "doctor": "npm --workspace @mandate/server run doctor",
+    "demo": "npm --workspace @mandate/server run demo --",
+    "mcp": "npm --workspace @mandate/server run mcp"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
