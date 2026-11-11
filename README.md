@@ -136,7 +136,14 @@ The same gate is exposed as an MCP server, so this is infrastructure rather than
 }
 ```
 
-The agent gets exactly four tools — `get_mandate`, `search_catalog`, `request_spend`, `get_spend_request` — and nothing else. It never sees a PayPal credential. Every `request_spend` goes through the identical policy and adjudication pipeline the HTTP API uses.
+The agent gets exactly four tools — `get_mandate`, `search_catalog`, `request_spend`, `get_spend_request` — and nothing else. It never sees a PayPal credential. Every `request_spend` goes through the identical policy and adjudication pipeline the HTTP API uses, and lands on the same audit chain attributed to that agent.
+
+It picks its backend automatically, which matters more than it sounds:
+
+- **If the control plane is running**, the MCP process talks to it over HTTP. A hash chain has exactly one valid writer, so the MCP server must not open the ledger itself — it would be refused by the single-writer lock, and "point your own agent at it" would mysteriously fail precisely when the app was running.
+- **If nothing is running**, it executes the pipeline in-process against the local ledger, so you can point Claude Desktop at the repo with nothing else started.
+
+Set `MANDATE_API_URL` to pin it to a specific control plane.
 
 That is the security argument: **you do not have to trust the agent, its prompt, or whatever it read on the internet. You only have to trust the mandate you wrote.**
 
